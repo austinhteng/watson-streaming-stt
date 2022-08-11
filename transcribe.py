@@ -170,9 +170,8 @@ def get_url():
     # https://console.bluemix.net/docs/services/speech-to-text/websockets.html#websockets
     # for details on which endpoints are for each region.
     region = config.get('auth', 'region')
-    host = REGION_MAP[region]
-    return ("wss://{}/speech-to-text/api/v1/recognize"
-           "?model=en-US_BroadbandModel").format(host)
+    instance_id = config.get('auth', 'instance_id')
+    return ("wss://api.{region}.speech-to-text.watson.cloud.ibm.com/instances/{instance_id}/v1/recognize?model=en-US_Telephony").format(region=region, instance_id=instance_id)
 
 def get_auth():
     config = configparser.RawConfigParser()
@@ -204,7 +203,7 @@ def main():
     # things like dump the binary sound packets in text in the
     # console.
     #
-    # websocket.enableTrace(True)
+    #websocket.enableTrace(True)
     ws = websocket.WebSocketApp(url,
                                 header=headers,
                                 on_message=on_message,
